@@ -73,3 +73,11 @@ def add_log(
     db.close()
 
     return RedirectResponse("/", status_code=303)
+
+@app.post("/reset")
+def reset_logs():
+    db = SessionLocal()
+    db.query(DailyLog).delete()
+    db.commit()
+    db.close()
+    return RedirectResponse("/", status_code=303)
