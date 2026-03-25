@@ -39,7 +39,7 @@ def home(request: Request):
     db = SessionLocal()
     logs = db.query(DailyLog).order_by(DailyLog.log_date.desc()).all()
     db.close()
-    return templates.TemplateResponse("index.html", {"request": request, "logs": logs})
+    return templates.TemplateResponse(request=request, name="index.html", context={"request": request, "logs": logs}) templates.TemplateResponse("index.html", {"request": request, "logs": logs})
 
 @app.post("/add")
 def add_log(
