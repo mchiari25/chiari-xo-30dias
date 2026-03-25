@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Chiari XO — 30 Días al 5K</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; }
+        body { font-family: Arial, sans-serif; max-width: 1000px; margin: 40px auto; padding: 20px; }
         h1, h2 { margin-bottom: 10px; }
         form { display: grid; gap: 12px; margin-bottom: 40px; }
         input, textarea, button { padding: 12px; font-size: 14px; }
@@ -22,6 +22,8 @@
     <form method="post" action="/add">
         <input type="text" name="water" placeholder="Agua de hoy (ej. 2 litros)" required>
         <input type="text" name="run" placeholder="Entrenamiento de hoy (ej. 30 min caminando)" required>
+        <input type="text" name="weight_lb" placeholder="Peso de hoy en libras (ej. 183 lb)">
+        <input type="text" name="sugar" placeholder="Azúcar del día (ej. 110 mg/dL)">
         <textarea name="diet" rows="4" placeholder="Qué comiste hoy" required></textarea>
         <textarea name="notes" rows="4" placeholder="Notas del día"></textarea>
         <button type="submit">Guardar registro</button>
@@ -34,6 +36,8 @@
                 <th>Fecha</th>
                 <th>Agua</th>
                 <th>Entrenamiento</th>
+                <th>Peso (lb)</th>
+                <th>Azúcar</th>
                 <th>Comida</th>
                 <th>Notas</th>
             </tr>
@@ -44,6 +48,8 @@
                 <td>{{ log.log_date }}</td>
                 <td>{{ log.water }}</td>
                 <td>{{ log.run }}</td>
+                <td>{{ log.weight_lb }}</td>
+                <td>{{ log.sugar }}</td>
                 <td>{{ log.diet }}</td>
                 <td>{{ log.notes }}</td>
             </tr>

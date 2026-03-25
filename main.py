@@ -4,17 +4,22 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy import create_engine, Column, Integer, String, Date
 from sqlalchemy.orm import sessionmaker, declarative_base
 import datetime
+import os
 
 app = FastAPI()
-
 templates = Jinja2Templates(directory="templates")
 
-# Base de datos (SQLite por ahora)
-DATABASE_URL = "sqlite:///./chiari_xo.db"
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./chiari_xo.db")
 
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+if DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+else:
+    engine = create_engine(DATABASE_URL)
+
 SessionLocal = sessionmaker(bind=engine)
-
 Base = declarative_base()
 
 class DailyLog(Base):
@@ -26,6 +31,8 @@ class DailyLog(Base):
     run = Column(String)
     diet = Column(String)
     notes = Column(String)
+    weight_lb = Column(String)
+    sugar = Column(String)
 
 Base.metadata.create_all(bind=engine)
 
@@ -45,7 +52,9 @@ def add_log(
     water: str = Form(...),
     run: str = Form(...),
     diet: str = Form(...),
-    notes: str = Form("")
+    notes: str = Form(""),
+    weight_lb: str = Form(""),
+    sugar: str = Form("")
 ):
     db = SessionLocal()
 
@@ -54,7 +63,9 @@ def add_log(
         water=water,
         run=run,
         diet=diet,
-        notes=notes
+        notes=notes,
+        weight_lb=weight_lb,
+        sugar=sugar
     )
 
     db.add(new_log)
